@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import number.SuperNumber;
 import tile.TileMenager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -22,16 +23,36 @@ public class GamePanel extends JPanel implements Runnable{
     public final int screenWidth = tileSize*maxScreenCol; //1024px
     public final int screenHeight = tileSize*maxScreenRow; //768px
     
+    
     int FPS = 60;
     
     TileMenager tileM = new TileMenager(this);
     
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
+    Sound sound = new Sound();
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
-    Player player = new Player(this,keyH);
+    public AssetSetter aSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
+    public Player player = new Player(this,keyH);
+    public SuperNumber num[] = new SuperNumber[10];
     
+    //GAME STATE
     
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
+    public final int questionState = 3;
+    
+    //GAME LOGIC
+    public String questions[] = new String [5]; 
+    public Questions question1 = new Questions("4 + _ = 5", 1);
+    public Questions question2 = new Questions("3 - _ = 0", 3);
+    public Questions question3 = new Questions("_ - 1 = 5", 6);
+    public Questions question4 = new Questions("8 / _ = 4", 2);
+    public Questions question5 = new Questions("2 * _ = 16", 8);
+   
+     
     public GamePanel() {
     	this.setPreferredSize(new Dimension(screenWidth, screenHeight));
     	this.setBackground(Color.black);
@@ -40,10 +61,23 @@ public class GamePanel extends JPanel implements Runnable{
     	this.setFocusable(true);
     }
     
+    public void setupNumbers() {
+    	questions[0] = question1.question;
+    	questions[1] = question2.question;
+    	questions[2] = question3.question;
+    	questions[3] = question4.question;
+    	questions[4] = question5.question;
+    	aSetter.setNumber();
+    	gameState = playState;
+    	ui.showMessage(questions[0]);
+    }
+    
     public void startGameThread() {
     	gameThread = new Thread(this);
     	gameThread.start();
     }
+   
+    
 
 	@Override
 	public void run() {
@@ -56,6 +90,8 @@ public class GamePanel extends JPanel implements Runnable{
 			update();
 			 
 			repaint();
+			
+			//drawQuestion();
 			
 			try {
 				double remainingTime = nextDrawTime - System.nanoTime();
@@ -77,7 +113,12 @@ public class GamePanel extends JPanel implements Runnable{
 		
 	}
 	public void update() {
-		player.update();
+		if(gameState == playState) {
+			player.update();
+	}
+		if(gameState == pauseState) {
+			//nothing
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -87,7 +128,19 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		tileM.draw(g2);
 		player.draw(g2);
+		for(int i=0;i<num.length;i++) {
+			if(num[i]!= null) {
+				num[i].draw(g2, this, num[i].worldX, num[i].worldY);
+			}
+		}
+		ui.draw(g2);
 		
 		g2.dispose();
 	}
+	
+	public void playSoundEffect(int i) {
+		sound.setFile(i);
+		sound.play();
+	}
+	
 }

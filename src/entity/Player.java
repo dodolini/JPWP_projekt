@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -15,14 +14,19 @@ public class Player extends Entity{
     
 	GamePanel gp;
 	KeyHandler keyH;
+	public int points = 0;
 	
 	public Player (GamePanel gp, KeyHandler keyH) {
 		this.gp =gp;
 		this.keyH = keyH;
+	    int answerValue = 999;
+	    
 		
 		solidArea = new Rectangle();
 		solidArea.x = 8;
 		solidArea.y = 16;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		solidArea.width = 32;
 		solidArea.height = 32;
 		
@@ -31,8 +35,8 @@ public class Player extends Entity{
 	}
 	
 	public void setDefaultValues () {
-		x = 100;
-		y = 100;
+		x = 475;
+		y = 400;
 		speed = 4;
 		direction = "down";
 	}
@@ -71,6 +75,9 @@ public class Player extends Entity{
 			collisionOn = false;
 			gp.cChecker.checkTile(this);
 			
+			int numIndex = gp.cChecker.checkObject(this, true);
+			pickUpNumber(numIndex);
+			
 			if(collisionOn == false) {
 				switch(direction) {
 				case "up":
@@ -103,6 +110,39 @@ public class Player extends Entity{
 		
 		
 	}
+	
+	public void pickUpNumber (int i) {
+		if(i != 999) {
+			String numberName = gp.num[i].name;
+			int answerValue;
+			switch(numberName) {
+			case "First":
+				gp.playSoundEffect(0);
+				answerValue = 0;
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			case "Second":
+				gp.playSoundEffect(0);
+				answerValue = 1;
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			case "Third":
+				gp.playSoundEffect(0);
+				answerValue = 2;
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			case "Forth":
+				gp.playSoundEffect(0);
+				answerValue = 3;
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			}
+		}
+	};
 	
 	public void draw(Graphics2D g2) {
 //		g2.setColor(Color.white);
