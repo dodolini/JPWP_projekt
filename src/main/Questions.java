@@ -1,8 +1,8 @@
 package main;
 
 public class Questions {
-	String question;
-	int solution;
+	public String question;
+	public int solution;
 
 	public Questions (String question, int solution) {
 		this.question = question;

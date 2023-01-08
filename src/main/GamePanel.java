@@ -40,9 +40,12 @@ public class GamePanel extends JPanel implements Runnable{
     //GAME STATE
     
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
     public final int questionState = 3;
+    public final int endState = 4;
+
     
     //GAME LOGIC
     public String questions[] = new String [5]; 
@@ -51,6 +54,8 @@ public class GamePanel extends JPanel implements Runnable{
     public Questions question3 = new Questions("_ - 1 = 5", 6);
     public Questions question4 = new Questions("8 / _ = 4", 2);
     public Questions question5 = new Questions("2 * _ = 16", 8);
+    public int currentQuestion = 0;
+    public int previousQuestion = -1;
    
      
     public GamePanel() {
@@ -61,15 +66,29 @@ public class GamePanel extends JPanel implements Runnable{
     	this.setFocusable(true);
     }
     
+    public void setupGame() {
+    	gameState = titleState;
+    }
+    
     public void setupNumbers() {
     	questions[0] = question1.question;
     	questions[1] = question2.question;
     	questions[2] = question3.question;
     	questions[3] = question4.question;
     	questions[4] = question5.question;
-    	aSetter.setNumber();
-    	gameState = playState;
-    	ui.showMessage(questions[0]);
+    	// gameState = playState;
+    	ui.showMessage(questions[currentQuestion]);
+    	if(currentQuestion == 0) {
+    		aSetter.setNumber();
+    	} else if (currentQuestion == 1) {
+    		aSetter.setNumber2();
+    	} else if (currentQuestion == 2) {
+    		aSetter.setNumber3();
+    	} else if (currentQuestion == 3) {
+    		aSetter.setNumber4();
+    	} else if (currentQuestion == 4) {
+    		aSetter.setNumber5();
+    	}
     }
     
     public void startGameThread() {
@@ -91,7 +110,11 @@ public class GamePanel extends JPanel implements Runnable{
 			 
 			repaint();
 			
-			//drawQuestion();
+			if(previousQuestion != currentQuestion) {
+				setupNumbers();
+				previousQuestion++;
+			}
+			
 			
 			try {
 				double remainingTime = nextDrawTime - System.nanoTime();
@@ -126,14 +149,20 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-		tileM.draw(g2);
-		player.draw(g2);
-		for(int i=0;i<num.length;i++) {
-			if(num[i]!= null) {
-				num[i].draw(g2, this, num[i].worldX, num[i].worldY);
+		if(gameState == titleState) {
+			
+			ui.draw(g2);
+			
+		} else {
+			tileM.draw(g2);
+			player.draw(g2);
+			for(int i=0;i<num.length;i++) {
+				if(num[i]!= null) {
+					num[i].draw(g2, this, num[i].worldX, num[i].worldY);
+				}
 			}
+			ui.draw(g2);
 		}
-		ui.draw(g2);
 		
 		g2.dispose();
 	}

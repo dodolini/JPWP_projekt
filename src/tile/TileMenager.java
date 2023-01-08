@@ -112,10 +112,6 @@ public class TileMenager {
 			
 		}
 		
-//		if(gp.gameState == gp.questionState) {
-//			//gp.drawQuestion();
-//		}
-		
 	}
 	
 }

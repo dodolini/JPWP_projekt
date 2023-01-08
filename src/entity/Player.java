@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import main.AssetSetter;
 import main.GamePanel;
 import main.KeyHandler;
 
@@ -15,6 +16,7 @@ public class Player extends Entity{
 	GamePanel gp;
 	KeyHandler keyH;
 	public int points = 0;
+	public AssetSetter aSetter = new AssetSetter(gp);
 	
 	public Player (GamePanel gp, KeyHandler keyH) {
 		this.gp =gp;
@@ -111,6 +113,78 @@ public class Player extends Entity{
 		
 	}
 	
+	public void checkAnswer (int answerValue) {
+		if(gp.currentQuestion == 0) {
+			if(answerValue == gp.question1.solution) {
+				System.out.println("Poprawna odpowiedz!");
+				points++;
+				gp.currentQuestion++;
+				System.out.println(gp.currentQuestion);
+				setDefaultValues();
+			} else {
+				System.out.println("Niepoprawna odpowiedz!");
+				points--;
+				gp.currentQuestion++;
+				setDefaultValues();
+			}
+		} else if (gp.currentQuestion == 1) {
+			if(answerValue == gp.question2.solution) {
+				System.out.println("Poprawna odpowiedz!");
+				points++;
+				gp.currentQuestion++;
+				System.out.println(gp.currentQuestion);
+				setDefaultValues();
+			} else {
+				System.out.println("Niepoprawna odpowiedz!");
+				points--;
+				gp.currentQuestion++;
+				setDefaultValues();
+			}
+		} else if (gp.currentQuestion == 2) {
+			if(answerValue == gp.question3.solution) {
+				System.out.println("Poprawna odpowiedz!");
+				points++;
+				gp.currentQuestion++;
+				System.out.println(gp.currentQuestion);
+				setDefaultValues();
+			} else {
+				System.out.println("Niepoprawna odpowiedz!");
+				points--;
+				gp.currentQuestion++;
+				setDefaultValues();
+			}
+	}   else if (gp.currentQuestion == 3) {
+		if(answerValue == gp.question4.solution) {
+			System.out.println("Poprawna odpowiedz!");
+			points++;
+			gp.currentQuestion++;
+			System.out.println(gp.currentQuestion);
+			setDefaultValues();
+		} else {
+			System.out.println("Niepoprawna odpowiedz!");
+			points--;
+			gp.currentQuestion++;
+			setDefaultValues();
+		}
+}       else if (gp.currentQuestion == 4) {
+	if(answerValue == gp.question5.solution) {
+		System.out.println("Poprawna odpowiedz!");
+		points++;
+		gp.currentQuestion++;
+		System.out.println(gp.currentQuestion);
+		setDefaultValues();
+	} else {
+		System.out.println("Niepoprawna odpowiedz!");
+		points--;
+		gp.currentQuestion++;
+		setDefaultValues();
+	}
+}
+		if(gp.currentQuestion == 5) {
+			gp.gameState = gp.endState;
+		}
+	}
+	
 	public void pickUpNumber (int i) {
 		if(i != 999) {
 			String numberName = gp.num[i].name;
@@ -119,24 +193,63 @@ public class Player extends Entity{
 			case "First":
 				gp.playSoundEffect(0);
 				answerValue = 0;
+				checkAnswer(answerValue);
 				gp.num[i] = null;
 				System.out.println(answerValue);
 				break;
 			case "Second":
 				gp.playSoundEffect(0);
 				answerValue = 1;
+				checkAnswer(answerValue);
 				gp.num[i] = null;
 				System.out.println(answerValue);
 				break;
 			case "Third":
 				gp.playSoundEffect(0);
 				answerValue = 2;
+				checkAnswer(answerValue);
 				gp.num[i] = null;
 				System.out.println(answerValue);
 				break;
 			case "Forth":
 				gp.playSoundEffect(0);
 				answerValue = 3;
+				checkAnswer(answerValue);
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			case "Fifth":
+				gp.playSoundEffect(0);
+				answerValue = 4;
+				checkAnswer(answerValue);
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			case "Sixth":
+				gp.playSoundEffect(0);
+				answerValue = 5;
+				checkAnswer(answerValue);
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			case "Seventh":
+				gp.playSoundEffect(0);
+				answerValue = 6;
+				checkAnswer(answerValue);
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			case "Eighth":
+				gp.playSoundEffect(0);
+				answerValue = 7;
+				checkAnswer(answerValue);
+				gp.num[i] = null;
+				System.out.println(answerValue);
+				break;
+			case "Ninth":
+				gp.playSoundEffect(0);
+				answerValue = 8;
+				checkAnswer(answerValue);
 				gp.num[i] = null;
 				System.out.println(answerValue);
 				break;
